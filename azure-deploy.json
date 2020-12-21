@@ -1,0 +1,151 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "labName": {
+            "type": "string",
+            "defaultValue": "workshop-dtl",
+            "metadata": {
+                "desciption": "The name of the DevTestLabs environment."
+            }
+        },
+        "labVmName": {
+            "type": "string",
+            "defaultValue": "workshop",
+            "metadata": {
+                "desciption": "The prefix of the virtual machine names."
+            }
+        },
+        "labUsername": {
+            "type": "string",
+            "metadata": {
+                "desciption": "The username for the local account that will be created on the virtual machines."
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_D3_v2",
+            "metadata": {
+                "comments": "TODO: restrict options",
+                "description": "The size of the vm to be created."
+            }
+        },
+        "labPassword": {
+            "type": "securestring",
+            "metadata": {
+                "desciption": "The password for the local account that will be created on the virtual machines."
+            }
+        },
+        "numberOfVirtualMachines": {
+            "type": "int",
+            "defaultValue": 1,
+            "minValue": 1,
+            "maxValue": 800,
+            "metadata": {
+                "desciption": "The number of virtual machines to deploy in the DevTestLab environment. Minimum 1, maximum 800."
+            }
+        },
+        "virtualMachineType": {
+            "type": "object",
+            "metadata": {
+                "comments": "TODO: parameterize 'offer', 'sku', 'publisher', 'osType' and 'version'",
+                "desciption": "The virtual machine image offer to deploy."
+            }
+        }
+    },
+    "variables": {
+        "labSubnetName": "[concat(variables('labVirtualNetworkName'), 'Subnet')]",
+        "labVirtualNetworkId": "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]",
+        "labVirtualNetworkName": "[concat('DTLVN-', parameters('labName'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-10-15-preview",
+            "name": "[parameters('labName')]",
+            "type": "Microsoft.DevTestLab/labs",
+            "location": "westeurope",
+            "properties": {
+                "labStorageType": "Premium",
+                "isolateLabResources": "Disabled"
+            },
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "resources": [
+                {
+                    "apiVersion": "2018-10-15-preview",
+                    "name": "LabVmsShutdown",
+                    "location": "westeurope",
+                    "type": "schedules",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
+                    ],
+                    "properties": {
+                        "status": "Enabled",
+                        "timeZoneId": "W. Europe Standard Time",
+                        "dailyRecurrence": {
+                            "time": "1900"
+                        },
+                        "taskType": "LabVmsShutdownTask",
+                        "notificationSettings": {
+                            "status": "Disabled",
+                            "timeInMinutes": 30
+                        }
+                    }
+                },
+
+                {
+                    "apiVersion": "2018-10-15-preview",
+                    "name": "[variables('labVirtualNetworkName')]",
+                    "type": "virtualNetworks",
+                    "location": "westeurope",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
+                    ]
+                },
+
+                {
+                    "apiVersion": "2018-10-15-preview",
+                    "name": "Public Environment Repo",
+                    "type": "artifactSources",
+                    "location": "westeurope",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
+                    ],
+                    "properties": {
+                        "status": "Enabled"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Microsoft.DevTestLab/labs/virtualMachines",
+            "apiVersion": "2018-10-15-preview",
+            "name": "[concat(parameters('labVmName'), padLeft(string(copyIndex()), 3, '0'))]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]",
+                "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]"
+            ],
+            "properties": {
+                "userName": "[parameters('labUsername')]",
+                "password": "[parameters('labPassword')]",
+                "labVirtualNetworkId": "[variables('labVirtualNetworkId')]",
+                "labSubnetName": "[variables('labSubnetName')]",
+                "size": "[parameters('vmSize')]",
+                "allowClaim": "true",
+                "galleryImageReference": {
+                "offer": "WindowsServer",
+                "publisher": "MicrosoftWindowsServer",
+                "sku": "2019-Datacenter",
+                "osType": "Windows",
+                "version": "latest"
+                }
+            },
+            "copy": {
+                "name": "labMachineCopy",
+                "count": "[parameters('numberOfVirtualMachines')]"
+            }
+        }
+    ]
+}
