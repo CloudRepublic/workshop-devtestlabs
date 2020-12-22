@@ -16,12 +16,6 @@
                 "desciption": "The prefix of the virtual machine names."
             }
         },
-        "labUsername": {
-            "type": "string",
-            "metadata": {
-                "desciption": "The username for the local account that will be created on the virtual machines."
-            }
-        },
         "vmSize": {
             "type": "string",
             "defaultValue": "Standard_D3_v2",
@@ -30,10 +24,18 @@
                 "description": "The size of the vm to be created."
             }
         },
+        "labUsername": {
+            "type": "string",
+            "metadata": {
+                "desciption": "The username for the local account that will be created on the virtual machines. Cannot be 'user', 'test' or 'admin'!"
+            }
+        },
         "labPassword": {
             "type": "securestring",
+            "minLength": 8,
+            "maxLength": 123,
             "metadata": {
-                "desciption": "The password for the local account that will be created on the virtual machines."
+                "desciption": "The password for the local account that will be created on the virtual machines. The password must container 3 of the following: 1) lowercase letter, 2) uppercase letter, 3) number, 4) special character."
             }
         },
         "numberOfVirtualMachines": {
