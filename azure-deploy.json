@@ -121,7 +121,7 @@
         {
             "type": "Microsoft.DevTestLab/labs/virtualMachines",
             "apiVersion": "2018-10-15-preview",
-            "name": "[concat(parameters('labVmName'), padLeft(string(copyIndex()), 3, '0'))]",
+            "name": "[concat(parameters('labName'), '/', parameters('labVmName'), padLeft(string(copyIndex()), 3, '0'))]",
             "location": "westeurope",
             "dependsOn": [
                 "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]",
