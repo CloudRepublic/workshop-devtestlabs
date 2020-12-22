@@ -56,7 +56,7 @@
         }
     },
     "variables": {
-        "labSubnetName": "[concat(variables('labVirtualNetworkName'), '-', 'subnet')]",
+        "labSubnetName": "[concat(variables('labVirtualNetworkName'), 'Subnet')]",
         "labVirtualNetworkId": "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]",
         "labVirtualNetworkName": "[concat(parameters('labName'), '-vnet')]"
     },
@@ -143,7 +143,7 @@
                 "userName": "[parameters('labUsername')]",
                 "password": "[parameters('labPassword')]",
                 "labVirtualNetworkId": "[variables('labVirtualNetworkId')]",
-                "labSubnetName": "[concat(variables('labVirtualNetworkName'), 'Subnet')]",
+                "labSubnetName": "[variables('labSubnetName')]",
                 "size": "[parameters('vmSize')]",
                 "allowClaim": "true",
                 "galleryImageReference": {
