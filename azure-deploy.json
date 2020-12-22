@@ -56,9 +56,9 @@
         }
     },
     "variables": {
-        "labSubnetName": "[concat(variables('labVirtualNetworkName'), 'Subnet')]",
+        "labSubnetName": "[concat(variables('labVirtualNetworkName'), '-', 'subnet')]",
         "labVirtualNetworkId": "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]",
-        "labVirtualNetworkName": "[concat('DTLVN-', parameters('labName'))]"
+        "labVirtualNetworkName": "[concat(parameters('labName'), '-vnet')]"
     },
     "resources": [
         {
@@ -104,7 +104,15 @@
                     "location": "westeurope",
                     "dependsOn": [
                         "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
-                    ]
+                    ],
+                    "properties": {
+                        "subnetOverrides": [
+                            {
+                                "labSubnetName": "[variables('labSubnetName')]",
+                                "useInVmCreationPermission": "Allow"
+                            }
+                        ]
+                    }
                 },
 
                 {
