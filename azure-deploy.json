@@ -108,6 +108,7 @@
                     "properties": {
                         "subnetOverrides": [
                             {
+                                "resourceId": "[concat('/subscriptions/', subscription().id, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/virtualNetworks/', variables('labVirtualNetworkName'), '/subnets/', variables('labVirtualNetworkName'), 'Subnet')]",
                                 "labSubnetName": "[variables('labSubnetName')]",
                                 "useInVmCreationPermission": "Allow"
                             }
