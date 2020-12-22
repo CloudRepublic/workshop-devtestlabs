@@ -68,7 +68,8 @@
             "location": "westeurope",
             "properties": {
                 "labStorageType": "Premium",
-                "isolateLabResources": "Disabled"
+                "isolateLabResources": "Disabled",
+                "vmCreationResourceGroupId": "[resourceGroup().id]"
             },
             "identity": {
                 "type": "SystemAssigned"
