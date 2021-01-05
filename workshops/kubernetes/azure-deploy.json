@@ -128,6 +128,23 @@
                     "properties": {
                         "status": "Enabled"
                     }
+                },
+                
+                {
+                    "apiVersion": "2018-09-15",
+                    "name": "[variables('artifactRepositoryName')]",
+                    "type": "artifactSources",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
+                    ],
+                    "properties": {
+                        "uri": "[variables('artifactRepoUri')]",
+                        "folderPath": "[variables('artifactRepoFolder')]",
+                        "branchRef": "[variables('artifactRepoBranch')]",
+                        "displayName": "[variables('artifactRepositoryDisplayName')]",
+                        "sourceType": "[variables('artifactRepoType')]",
+                        "status": "Enabled"
+                    }
                 }
             ]
         },
@@ -174,24 +191,6 @@
                     }
                 ]
             },
-            "resources": [
-                {
-                    "apiVersion": "2018-09-15",
-                    "name": "[variables('artifactRepositoryName')]",
-                    "type": "artifactSources",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
-                    ],
-                    "properties": {
-                        "uri": "[variables('artifactRepoUri')]",
-                        "folderPath": "[variables('artifactRepoFolder')]",
-                        "branchRef": "[variables('artifactRepoBranch')]",
-                        "displayName": "[variables('artifactRepositoryDisplayName')]",
-                        "sourceType": "[variables('artifactRepoType')]",
-                        "status": "Enabled"
-                    }
-                }
-            ],
             "copy": {
                 "name": "labMachineCopy",
                 "count": "[parameters('numberOfVirtualMachines')]"
