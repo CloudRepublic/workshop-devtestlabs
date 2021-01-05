@@ -1,0 +1,201 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "labName": {
+            "type": "string",
+            "defaultValue": "workshop-dtl",
+            "metadata": {
+                "desciption": "The name of the DevTestLabs environment."
+            }
+        },
+        "labVmName": {
+            "type": "string",
+            "defaultValue": "workshop",
+            "metadata": {
+                "desciption": "The prefix of the virtual machine names."
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_D3_v2",
+            "metadata": {
+                "comments": "TODO: restrict options",
+                "description": "The size of the vm to be created."
+            }
+        },
+        "labUsername": {
+            "type": "string",
+            "metadata": {
+                "desciption": "The username for the local account that will be created on the virtual machines. Cannot be 'user', 'test' or 'admin'!"
+            }
+        },
+        "labPassword": {
+            "type": "securestring",
+            "minLength": 8,
+            "maxLength": 123,
+            "metadata": {
+                "desciption": "The password for the local account that will be created on the virtual machines. The password must container 3 of the following: 1) lowercase letter, 2) uppercase letter, 3) number, 4) special character."
+            }
+        },
+        "numberOfVirtualMachines": {
+            "type": "int",
+            "defaultValue": 1,
+            "minValue": 1,
+            "maxValue": 800,
+            "metadata": {
+                "desciption": "The number of virtual machines to deploy in the DevTestLab environment. Minimum 1, maximum 800."
+            }
+        }
+    },
+    "variables": {
+        "labSubnetName": "[concat(variables('labVirtualNetworkName'), 'Subnet')]",
+        "labVirtualNetworkId": "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]",
+        "labVirtualNetworkName": "[concat(parameters('labName'), '-vnet')]",
+        "artifactRepositoryName": "workshop-artifacts",
+        "artifactRepoUri": "https://github.com/CloudRepublic/workshop-devtestlabs.git",
+        "artifactRepoFolder": "/Artifacts",
+        "artifactRepoBranch": "main",
+        "artifactRepositoryDisplayName": "Workshop Artifacts",
+        "artifactRepoType": "GitHub",
+
+        "chocoArtifactInstallChocoPackages": "kubernetes-cli kubernetes-helm"
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-10-15-preview",
+            "name": "[parameters('labName')]",
+            "type": "Microsoft.DevTestLab/labs",
+            "location": "westeurope",
+            "properties": {
+                "labStorageType": "Premium",
+                "isolateLabResources": "Disabled",
+                "vmCreationResourceGroupId": "[resourceGroup().id]"
+            },
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "resources": [
+                {
+                    "apiVersion": "2018-10-15-preview",
+                    "name": "LabVmsShutdown",
+                    "location": "westeurope",
+                    "type": "schedules",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
+                    ],
+                    "properties": {
+                        "status": "Enabled",
+                        "timeZoneId": "W. Europe Standard Time",
+                        "dailyRecurrence": {
+                            "time": "1900"
+                        },
+                        "taskType": "LabVmsShutdownTask",
+                        "notificationSettings": {
+                            "status": "Disabled",
+                            "timeInMinutes": 30
+                        }
+                    }
+                },
+
+                {
+                    "apiVersion": "2018-10-15-preview",
+                    "name": "[variables('labVirtualNetworkName')]",
+                    "type": "virtualNetworks",
+                    "location": "westeurope",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
+                    ],
+                    "properties": {
+                        "subnetOverrides": [
+                            {
+                                "resourceId": "[concat('/subscriptions/', subscription().id, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/virtualNetworks/', variables('labVirtualNetworkName'), '/subnets/', variables('labVirtualNetworkName'), 'Subnet')]",
+                                "labSubnetName": "[variables('labSubnetName')]",
+                                "useInVmCreationPermission": "Allow"
+                            }
+                        ]
+                    }
+                },
+
+                {
+                    "apiVersion": "2018-10-15-preview",
+                    "name": "Public Environment Repo",
+                    "type": "artifactSources",
+                    "location": "westeurope",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
+                    ],
+                    "properties": {
+                        "status": "Enabled"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Microsoft.DevTestLab/labs/virtualMachines",
+            "apiVersion": "2018-10-15-preview",
+            "name": "[concat(parameters('labName'), '/', parameters('labVmName'), padLeft(string(copyIndex()), 3, '0'))]",
+            "location": "westeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]",
+                "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]"
+            ],
+            "properties": {
+                "userName": "[parameters('labUsername')]",
+                "password": "[parameters('labPassword')]",
+                "labVirtualNetworkId": "[variables('labVirtualNetworkId')]",
+                "labSubnetName": "[variables('labSubnetName')]",
+                "size": "[parameters('vmSize')]",
+                "allowClaim": "true",
+                "galleryImageReference": {
+                    "offer": "WindowsServer",
+                    "publisher": "MicrosoftWindowsServer",
+                    "sku": "2019-Datacenter-with-Containers",
+                    "osType": "Windows",
+                    "version": "latest"
+                },
+                "artifacts": [
+                    {
+                        "artifactId": "[resourceId('Microsoft.DevTestLab/labs/artifactSources/artifacts', parameters('labName'), 'public repo', 'windows-chocolatey')]",
+                        "parameters": [
+                            {
+                                "name": "packages",
+                                "value": "[variables('chocoArtifactInstallChocoPackages')]"
+                            },
+                            {
+                                "name": "allowEmptyChecksums",
+                                "value": true
+                            },
+                            {
+                                "name": "ignoreChecksums",
+                                "value": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            "resources": [
+                {
+                    "apiVersion": "2018-09-15",
+                    "name": "[variables('artifactRepositoryName')]",
+                    "type": "artifactSources",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
+                    ],
+                    "properties": {
+                        "uri": "[variables('artifactRepoUri')]",
+                        "folderPath": "[variables('artifactRepoFolder')]",
+                        "branchRef": "[variables('artifactRepoBranch')]",
+                        "displayName": "[variables('artifactRepositoryDisplayName')]",
+                        "sourceType": "[variables('artifactRepoType')]",
+                        "status": "Enabled"
+                    }
+                }
+            ],
+            "copy": {
+                "name": "labMachineCopy",
+                "count": "[parameters('numberOfVirtualMachines')]"
+            }
+        }
+    ]
+}
