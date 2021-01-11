@@ -59,7 +59,7 @@
         "artifactRepositoryDisplayName": "Workshop Artifacts",
         "artifactRepoType": "GitHub",
 
-        "chocoArtifactInstallChocoPackages": "kubernetes-cli kubernetes-helm"
+        "chocoArtifactInstallChocoPackages": "kubernetes-cli kubernetes-helm minikube"
     },
     "resources": [
         {
