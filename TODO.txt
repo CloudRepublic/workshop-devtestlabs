@@ -1,0 +1,20 @@
+Flow automatiseren voor Windows 10 Pro + Docker + K8S:
+- First user login -> skip Windows settings?
+- WSL2 (artifact)
+- WSL2 update package: https://docs.microsoft.com/en-us/windows/wsl/install-win10#step-4---download-the-linux-kernel-update-package   (hoe automatiseren?)
+- PS Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All   (restart required)
+- Chocolaty: docker-for-windows + others
+- PS: Add-LocalGroupMember -Group "docker-users" -Member "<WM-USERNAME-HERE>"
+- PS: add scheduled task to start C:\Program Files\Docker\Docker\Docker Desktop.exe   OF   zet 'Start Docker Desktop when you log in' aan  (hoe?)
+- Chrome
+- VS Code
+- Firewall (uit OF allow C:\Program Files\Docker\Docker\resources\com.docker.backend.exe)
+- Handmatig Kubernetes aanzetten (hoe automatiseren?)
+
+
+
+
+Flow automatiseren voor Windows Server + Containers:
+- PS: Virtuele switch maken
+- PS: scheduled task maken die Minikube start (bij user login) met de aangemaakte virtuele switch
+- Uitzoeken waarom Minikube niet wil starten
