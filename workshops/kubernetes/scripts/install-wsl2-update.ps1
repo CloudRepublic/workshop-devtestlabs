@@ -9,6 +9,7 @@ Write-Host "Download complete."
 
 Write-Host "Installing MSI..."
 
-Start-Process msiexec.exe -ArgumentList "/a `"$downloadFile`" /quiet" -NoNewWindow -Wait
+$proc = Start-Process -FilePath "msiexec.exe" -ArgumentList "/a `"$downloadFile`" /quiet" -PassThru
+$proc.WaitForExit()
 
-Write-Host "MSI installation complete."
+Write-Host "MSI installation complete with exit-code: $($proc.ExitCode)."
