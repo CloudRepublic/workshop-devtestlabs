@@ -42,7 +42,7 @@ $oldPolicyValue = Set-LocalAccountTokenFilterPolicy
 try
 {
     Write-Host "Executing command '$command' as (local) user '$username'..."
-    Invoke-Command -ComputerName $env:COMPUTERNAME -Credential $credential -FilePath $command -ArgumentList $PackageList
+    Invoke-Command -ComputerName $env:COMPUTERNAME -Credential $credential -FilePath $command
     Write-Host "Command executed succesfully"
 }
 finally

@@ -1,17 +1,13 @@
-param(
-    [string]$username
-)
-
-$filepath = "C:\Users\$username\AppData\Roaming\Docker\settings.json"
+$filepath = Join-Path -Path $env:APPDATA -ChildPath "/docker/settings.json"
 
 # Fetch settings data
-$data = Get-Content -Path $dockerSettingsFile | ConvertFrom-Json
+$data = Get-Content -Path $filepath | ConvertFrom-Json
 
 # Enable Kubernetes
 $data.kubernetesEnabled = $True
 
 # Write back settings
-Set-Content -Value ($data | ConvertTo-Json) -Path $dockerSettingsFile
+Set-Content -Value ($data | ConvertTo-Json) -Path $filepath
 
 # Restart Docker service
 Restart-Service -DisplayName "Docker Desktop Service"
