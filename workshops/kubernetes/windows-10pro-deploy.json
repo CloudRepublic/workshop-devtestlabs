@@ -52,12 +52,6 @@
         "labSubnetName": "[concat(variables('labVirtualNetworkName'), 'Subnet')]",
         "labVirtualNetworkId": "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]",
         "labVirtualNetworkName": "[concat(parameters('labName'), '-vnet')]",
-        "artifactRepositoryName": "workshop-artifacts",
-        "artifactRepoUri": "https://github.com/CloudRepublic/workshop-devtestlabs.git",
-        "artifactRepoFolder": "/Artifacts",
-        "artifactRepoBranch": "main",
-        "artifactRepositoryDisplayName": "Workshop Artifacts",
-        "artifactRepoType": "GitHub",
 
         "chocoArtifactInstallChocoPackages": "kubernetes-cli kubernetes-helm"
     },
@@ -126,23 +120,6 @@
                         "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
                     ],
                     "properties": {
-                        "status": "Enabled"
-                    }
-                },
-                
-                {
-                    "apiVersion": "2018-09-15",
-                    "name": "[variables('artifactRepositoryName')]",
-                    "type": "artifactSources",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.DevTestLab/labs', parameters('labName'))]"
-                    ],
-                    "properties": {
-                        "uri": "[variables('artifactRepoUri')]",
-                        "folderPath": "[variables('artifactRepoFolder')]",
-                        "branchRef": "[variables('artifactRepoBranch')]",
-                        "displayName": "[variables('artifactRepositoryDisplayName')]",
-                        "sourceType": "[variables('artifactRepoType')]",
                         "status": "Enabled"
                     }
                 }
