@@ -1,5 +1,13 @@
 $downloadFile   = "wsl2-update.msi"
 $logFile        = "wsl2-update_install.log"
+$msiArguments = @(
+    "/a"
+    ".\$downloadFile"
+    "/qn"
+    "/norestart"
+    "/L*v"
+    $logFile
+)
 
 Write-Host "Downloading WSL2 update file..."
 
@@ -9,7 +17,6 @@ Write-Host "Download complete."
 
 Write-Host "Installing MSI..."
 
-$proc = Start-Process -FilePath "msiexec.exe" -ArgumentList "/a `"$downloadFile`" /quiet" -PassThru
-$proc.WaitForExit()
+$proc = Start-Process -FilePath "msiexec.exe" -ArgumentList $msiArguments -Wait -NoNewWindow
 
 Write-Host "MSI installation complete with exit-code: $($proc.ExitCode)."
