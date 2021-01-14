@@ -150,9 +150,6 @@
                 },
                 "artifacts": [
                     {
-                        "artifactId": "[resourceId('Microsoft.DevTestLab/labs/artifactSources/artifacts', parameters('labName'), 'public repo', 'windows-wsl')]"
-                    },
-                    {
                         "artifactId": "[resourceId('Microsoft.DevTestLab/labs/artifactSources/artifacts', parameters('labName'), 'public repo', 'windows-chocolatey')]",
                         "parameters": [
                             {
@@ -166,6 +163,23 @@
                             {
                                 "name": "ignoreChecksums",
                                 "value": false
+                            }
+                        ]
+                    },
+                    {
+                        "artifactId": "[resourceId('Microsoft.DevTestLab/labs/artifactSources/artifacts', parameters('labName'), 'public repo', 'windows-run-powershell')]",
+                        "parameters": [
+                            {
+                                "name": "scriptFileUris",
+                                "value": "[[\"https://raw.githubusercontent.com/CloudRepublic/workshop-devtestlabs/main/workshops/kubernetes/scripts/disable-privacyexperience.ps1\"]"
+                            },
+                            {
+                                "name": "scriptToRun",
+                                "value": "disable-privacyexperience.ps1"
+                            },
+                            {
+                                "name": "scriptArguments",
+                                "value": ""
                             }
                         ]
                     },
