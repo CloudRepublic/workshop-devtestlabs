@@ -9,6 +9,6 @@ Write-Host "Download complete."
 
 Write-Host "Installing MSI..."
 
-msiexec.exe /a $downloadFile /l*v $logFile /quiet
+Start-Process msiexec.exe -ArgumentList "/a `"$downloadFile`" /quiet" -NoNewWindow -Wait
 
 Write-Host "MSI installation complete."
