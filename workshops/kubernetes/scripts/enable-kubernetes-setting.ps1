@@ -1,4 +1,8 @@
-$filepath = Join-Path -Path $env:APPDATA -ChildPath "/docker/settings.json"
+param(
+    [string]$username
+)
+
+$filepath = "C:\Users\$username\AppData\Roaming\Docker\settings.json"
 
 Write-Host "Changing settings on file '$filepath'..."
 
@@ -12,8 +16,3 @@ $data.kubernetesEnabled = $True
 Set-Content -Value ($data | ConvertTo-Json) -Path $filepath
 
 Write-Host "Settings changed."
-
-# Restart Docker service
-Write-Host "Restarting Docker..."
-Restart-Service -DisplayName "Docker Desktop Service"
-Write-Host "Docker restarted."
