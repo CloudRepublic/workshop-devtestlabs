@@ -191,15 +191,15 @@
                         "parameters": [
                             {
                                 "name": "scriptFileUris",
-                                "value": "[[\"https://raw.githubusercontent.com/CloudRepublic/workshop-devtestlabs/main/workshops/kubernetes/scripts/install-wsl2-update.ps1\"]"
+                                "value": "[[\"https://raw.githubusercontent.com/CloudRepublic/workshop-devtestlabs/main/workshops/kubernetes/scripts/configure-dockerdesktop.ps1\"]"
                             },
                             {
                                 "name": "scriptToRun",
-                                "value": "install-wsl2-update.ps1"
+                                "value": "configure-dockerdesktop.ps1"
                             },
                             {
                                 "name": "scriptArguments",
-                                "value": ""
+                                "value": "[concat('-username ', parameters('labUsername'))]"
                             }
                         ]
                     },

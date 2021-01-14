@@ -2,9 +2,8 @@ $downloadFile   = "wsl2-update.msi"
 $logFile        = "wsl2-update_install.log"
 $msiArguments = @(
     "/a"
-    ".\$downloadFile"
+    $downloadFile
     "/qn"
-    "/norestart"
     "/L*v"
     $logFile
 )

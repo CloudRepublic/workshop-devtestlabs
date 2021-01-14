@@ -11,6 +11,10 @@ $data = Get-Content -Path $filepath | ConvertFrom-Json
 
 # Enable Kubernetes
 $data.kubernetesEnabled = $True
+$data.displayedTutorial = $True
+$data.skipUpdateToWSLPrompt = $True
+$data.wslEngineEnabled = $False
+$data.analyticsEnabled = $False
 
 # Write back settings
 Set-Content -Value ($data | ConvertTo-Json) -Path $filepath
