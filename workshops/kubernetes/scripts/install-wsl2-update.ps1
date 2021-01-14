@@ -1,6 +1,5 @@
-$downloadFolder = "%TEMP%"
-$downloadFile   = "$downloadFolder/wsl-update.msi"
-$logFile        = "$downloadFolder/wsl-update_install.log"
+$downloadFile   = "wsl2-update.msi"
+$logFile        = "wsl2-update_install.log"
 
 Write-Host "Downloading WSL2 update file..."
 

@@ -191,11 +191,11 @@
                         "parameters": [
                             {
                                 "name": "scriptFileUris",
-                                "value": "[[\"https://raw.githubusercontent.com/CloudRepublic/workshop-devtestlabs/main/workshops/kubernetes/scripts/install-wsl-update.ps1\"]"
+                                "value": "[[\"https://raw.githubusercontent.com/CloudRepublic/workshop-devtestlabs/main/workshops/kubernetes/scripts/install-wsl2-update.ps1\"]"
                             },
                             {
                                 "name": "scriptToRun",
-                                "value": "install-wsl-update.ps1"
+                                "value": "install-wsl2-update.ps1"
                             },
                             {
                                 "name": "scriptArguments",
