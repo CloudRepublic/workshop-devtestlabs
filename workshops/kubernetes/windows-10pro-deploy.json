@@ -11,7 +11,9 @@
         },
         "labVmName": {
             "type": "string",
-            "defaultValue": "workshop",
+            "defaultValue": "workshopvm",
+            "minLength": 1,
+            "maxLength": 12,
             "metadata": {
                 "desciption": "The prefix of the virtual machine names."
             }
@@ -21,7 +23,7 @@
             "defaultValue": "Standard_D4s_v3",
             "metadata": {
                 "comments": "TODO: restrict options. At least choose a *_v3 version, as it supports Nested Virtualization",
-                "description": "The size of the vm to be created."
+                "description": "The size of the VM to be created."
             }
         },
         "labUsername": {
