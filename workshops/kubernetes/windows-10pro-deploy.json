@@ -53,7 +53,7 @@
         "labVirtualNetworkId": "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]",
         "labVirtualNetworkName": "[concat(parameters('labName'), '-vnet')]",
 
-        "chocoArtifactInstallChocoPackages": "chrome kubernetes-cli kubernetes-helm"
+        "chocoArtifactInstallChocoPackages": "chrome vscode git kubernetes-cli kubernetes-helm"
     },
     "resources": [
         {
