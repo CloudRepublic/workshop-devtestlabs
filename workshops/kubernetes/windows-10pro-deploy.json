@@ -150,7 +150,7 @@
                     "osType": "Windows",
                     "version": "latest"
                 },
-                "disallowPublicIpAddress": true,
+                "disallowPublicIpAddress": false,
                 "artifacts": [
                     {
                         "artifactId": "[resourceId('Microsoft.DevTestLab/labs/artifactSources/artifacts', parameters('labName'), 'public repo', 'windows-chocolatey')]",
