@@ -40,6 +40,12 @@
                 "desciption": "The password for the local account that will be created on the virtual machines. The password must container 3 of the following: 1) lowercase letter, 2) uppercase letter, 3) number, 4) special character."
             }
         },
+        "shutdownTime": {
+            "type": "int",
+            "minValue": 0,
+            "maxValue": 2359,
+            "defaultValue": 1900
+        },
         "numberOfVirtualMachines": {
             "type": "int",
             "defaultValue": 1,
@@ -84,7 +90,7 @@
                         "status": "Enabled",
                         "timeZoneId": "W. Europe Standard Time",
                         "dailyRecurrence": {
-                            "time": "1900"
+                            "time": "[parameters('shutdownTime')]"
                         },
                         "taskType": "LabVmsShutdownTask",
                         "notificationSettings": {
