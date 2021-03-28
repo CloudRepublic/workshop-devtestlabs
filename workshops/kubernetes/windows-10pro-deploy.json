@@ -44,7 +44,10 @@
             "type": "int",
             "minValue": 0,
             "maxValue": 2359,
-            "defaultValue": 1900
+            "defaultValue": 2300,
+            "metadata": {
+                "description": "The shutdown time for the VM. The format is HHmm (no seperators between hours and minutes)."
+            }
         },
         "numberOfVirtualMachines": {
             "type": "int",
