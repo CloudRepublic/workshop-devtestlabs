@@ -1,0 +1,1 @@
+New-Item -Path "C:\" -Name "temp" -ItemType Directory -Force
