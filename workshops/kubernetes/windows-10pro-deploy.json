@@ -179,6 +179,15 @@
                         ]
                     },
                     {
+                        "artifactId": "[resourceId('Microsoft.DevTestLab/labs/artifactSources/artifacts', parameters('labName'), 'public repo', 'windows-settimezone')]",
+                        "parameters": [
+                            {
+                                "name": "TimeZoneId",
+                                "value": "W. Europe Standard Time"
+                            }
+                        ]
+                    },
+                    {
                         "artifactId": "[resourceId('Microsoft.DevTestLab/labs/artifactSources/artifacts', parameters('labName'), 'public repo', 'windows-run-powershell')]",
                         "parameters": [
                             {
