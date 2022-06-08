@@ -287,8 +287,7 @@
                                 "value": "[concat('-username ', parameters('labUsername'), ' -password ', parameters('labPassword'), ' -scriptFile enable-file-extensions.ps1')]"
                             }
                         ]
-                    }
-                    ,
+                    },
                     {
                         "artifactId": "[resourceId('Microsoft.DevTestLab/labs/artifactSources/artifacts', parameters('labName'), 'public repo', 'windows-run-powershell')]",
                         "parameters": [

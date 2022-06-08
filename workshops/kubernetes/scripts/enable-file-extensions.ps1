@@ -1,5 +1,1 @@
-# http://superuser.com/questions/666891/script-to-set-hide-file-extensions
-Push-Location
-Set-Location HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
-Set-ItemProperty . HideFileExt "0"
-Pop-Location
+Set-Itemproperty -path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name 'HideFileExt' -Value 0
