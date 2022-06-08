@@ -63,8 +63,7 @@
         "labSubnetName": "[concat(variables('labVirtualNetworkName'), 'Subnet')]",
         "labVirtualNetworkId": "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]",
         "labVirtualNetworkName": "[concat(parameters('labName'), '-vnet')]",
-
-        "chocoArtifactInstallChocoPackages": "googlechrome vscode git.install kubernetes-cli kubernetes-helm"
+        "chocoArtifactInstallChocoPackages": "googlechrome git.install kubernetes-cli kubernetes-helm"
     },
     "resources": [
         {
@@ -260,6 +259,23 @@
                             {
                                 "name": "scriptArguments",
                                 "value": "[concat('-username ', parameters('labUsername'), ' -password ', parameters('labPassword'), ' -scriptFile create-temp-folder.ps1')]"
+                            }
+                        ]
+                    },
+                    {
+                        "artifactId": "[resourceId('Microsoft.DevTestLab/labs/artifactSources/artifacts', parameters('labName'), 'public repo', 'windows-run-powershell')]",
+                        "parameters": [
+                            {
+                                "name": "scriptFileUris",
+                                "value": "[[\"https://raw.githubusercontent.com/CloudRepublic/workshop-devtestlabs/main/workshops/kubernetes/scripts/execute-script-as-user.ps1\", \"https://raw.githubusercontent.com/CloudRepublic/workshop-devtestlabs/main/workshops/kubernetes/scripts/install-vscode.ps1\"]"
+                            },
+                            {
+                                "name": "scriptToRun",
+                                "value": "execute-script-as-user.ps1"
+                            },
+                            {
+                                "name": "scriptArguments",
+                                "value": "[concat('-username ', parameters('labUsername'), ' -password ', parameters('labPassword'), ' -scriptFile install-vscode.ps1')]"
                             }
                         ]
                     }
