@@ -1,8 +1,13 @@
 param(
-    [string]$username
+    [string]$UserName,
+    [string]$Password
 )
 
-$filepath = "C:\Users\$username\AppData\Roaming\Docker\settings.json"
+# Install Docker
+& "$PSScriptRoot\Artifactfile.ps1" -UserName $UserName -Password $Password
+
+# Configure Docker settings
+$filepath = "C:\Users\$UserName\AppData\Roaming\Docker\settings.json"
 
 Write-Host "Changing settings on file '$filepath'..."
 
@@ -15,6 +20,9 @@ $data.displayedTutorial = $True
 $data.skipUpdateToWSLPrompt = $True
 $data.wslEngineEnabled = $False
 $data.analyticsEnabled = $False
+
+# Accept license
+$data.licenseTermsVersion = 2
 
 # Write back settings
 Set-Content -Value ($data | ConvertTo-Json) -Path $filepath
