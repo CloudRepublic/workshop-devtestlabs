@@ -31,13 +31,13 @@ if (-not(Test-Path -Path $filepath -PathType Leaf)){
     $data.displayRestartDialog = $True
     $data.displaySwitchWinLinContainers = $True
     $data.displayed18362Deprecation = $False
-    $data.displayedElectronPopup = []
+    $data.displayedElectronPopup = @()
     $data.enableIntegrationWithDefaultWslDistro = $True
     $data.exposeDockerAPIOnTCP2375 = $False
     $data.extensionsEnabled = $True
-    $data.filesharingDirectories = []
+    $data.filesharingDirectories = @()
     $data.firstLaunchTime = 1654702030
-    $data.integratedWslDistros = []
+    $data.integratedWslDistros = @()
     $data.kubernetesInitialInstallPerformed = $False
     $data.lastLoginDate = 0
     $data.latestBannerKey = ""
