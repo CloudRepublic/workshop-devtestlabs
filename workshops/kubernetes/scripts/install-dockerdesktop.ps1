@@ -26,7 +26,6 @@ if (-not(Test-Path -Path $filepath -PathType Leaf)){
     $data.dataFolder = "C:\\ProgramData\\DockerDesktop\\vm-data"
     $data.deprecatedCgroupv1 = $False
     $data.disableHardwareAcceleration = $False
-    $data.disableTips = $False
     $data.disableUpdate = $False
     $data.diskSizeMiB = 65536
     $data.diskTRIM = $True
@@ -87,6 +86,7 @@ $data.displayedTutorial = $True
 $data.skipUpdateToWSLPrompt = $True
 $data.wslEngineEnabled = $False
 $data.analyticsEnabled = $False
+$data.disableTips = $True
 
 # Accept license
 $data.licenseTermsVersion = 2
