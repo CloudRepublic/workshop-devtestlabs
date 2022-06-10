@@ -9,6 +9,8 @@ param(
 # Configure Docker settings
 $filepath = "C:\Users\$UserName\AppData\Roaming\Docker\settings.json"
 
+$data = @{}
+
 if (-not(Test-Path -Path $filepath -PathType Leaf)){
     Write-Host "Creating file $filepath"
 
