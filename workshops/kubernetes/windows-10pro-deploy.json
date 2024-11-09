@@ -154,7 +154,7 @@
                 "galleryImageReference": {
                     "offer": "Windows-10",
                     "publisher": "MicrosoftWindowsDesktop",
-                    "sku": "20h2-pron",
+                    "sku": "win10-22h2-pron",
                     "osType": "Windows",
                     "version": "latest"
                 },
